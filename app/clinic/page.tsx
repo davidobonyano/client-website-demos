@@ -5,6 +5,7 @@ import TextReveal from "@/components/TextReveal";
 import MagneticButton from "@/components/MagneticButton";
 import RevealImage from "@/components/RevealImage";
 import Footer from "@/components/Footer";
+import BookingSection from "@/components/BookingSection";
 import { ArrowRight } from "lucide-react";
 
 export default function ClinicPage() {
@@ -15,6 +16,7 @@ export default function ClinicPage() {
                 ctaText="Consultation"
                 themeColor="bg-[#E8F5E9] text-[#1B5E20]"
                 variant="minimal"
+                onCtaClick={() => document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })}
             />
 
             {/* HERO - Video Background */}
@@ -44,7 +46,10 @@ export default function ClinicPage() {
                         mode="blur"
                         delay={0.5}
                     />
-                    <MagneticButton className="px-10 py-4 bg-white rounded-full text-[#1B5E20] font-medium hover:bg-[#F1F8E9] transition-colors inline-block shadow-xl border border-gray-100">
+                    <MagneticButton
+                        onClick={() => document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })}
+                        className="px-10 py-4 bg-white rounded-full text-[#1B5E20] font-medium hover:bg-[#F1F8E9] transition-colors inline-block shadow-xl border border-gray-100"
+                    >
                         Begin Journey
                     </MagneticButton>
                 </div>
@@ -95,6 +100,11 @@ export default function ClinicPage() {
                     ))}
                 </div>
             </section>
+
+            <BookingSection
+                title="Book Consultation"
+                themeColor="bg-[#1B5E20]"
+            />
 
             <Footer appName="AURA" description="Crafted in Light." />
         </main>

@@ -5,6 +5,8 @@ import BeforeAfter from "@/components/BeforeAfter";
 import TextReveal from "@/components/TextReveal";
 import MagneticButton from "@/components/MagneticButton";
 import RevealImage from "@/components/RevealImage";
+import BookingSection from "@/components/BookingSection";
+import Footer from "@/components/Footer";
 import { CheckCircle, ArrowUpRight, Check } from "lucide-react";
 import { useState } from "react";
 
@@ -27,6 +29,7 @@ export default function CleaningPage() {
                 ctaText="Book Now"
                 themeColor="bg-[#E0F2F1] text-[#004D40]"
                 variant="minimal"
+                onCtaClick={() => document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })}
             />
 
             {/* HERO - Skincare/Airy Vibe */}
@@ -49,7 +52,10 @@ export default function CleaningPage() {
                         advanced eco-friendly algorithms.
                     </p>
 
-                    <MagneticButton className="px-10 py-5 bg-[#004D40] text-white rounded-full font-semibold shadow-2xl hover:bg-[#00695C] transition-colors flex items-center gap-2 mx-auto">
+                    <MagneticButton
+                        onClick={() => document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })}
+                        className="px-10 py-5 bg-[#004D40] text-white rounded-full font-semibold shadow-2xl hover:bg-[#00695C] transition-colors flex items-center gap-2 mx-auto"
+                    >
                         Schedule Service <ArrowUpRight size={20} />
                     </MagneticButton>
                 </div>
@@ -113,7 +119,10 @@ export default function CleaningPage() {
                                         </li>
                                     ))}
                                 </ul>
-                                <MagneticButton className="w-full py-4 rounded-xl border border-gray-200 font-semibold text-gray-600 group-hover:bg-[#004D40] group-hover:text-white group-hover:border-transparent transition-all">
+                                <MagneticButton
+                                    onClick={() => document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })}
+                                    className="w-full py-4 rounded-xl border border-gray-200 font-semibold text-gray-600 group-hover:bg-[#004D40] group-hover:text-white group-hover:border-transparent transition-all"
+                                >
                                     Select Plan
                                 </MagneticButton>
                             </div>
@@ -122,24 +131,12 @@ export default function CleaningPage() {
                 </div>
             </section>
 
-            {/* FOOTER - Soft Gradient */}
-            <footer className="py-24 bg-gradient-to-br from-[#E0F2F1] to-white text-center">
-                <h2 className="text-4xl font-light text-[#004D40] mb-8">Ready for clarity?</h2>
-                <MagneticButton className="px-12 py-5 bg-white text-[#004D40] rounded-full shadow-xl font-bold hover:scale-105 transition-transform">
-                    Book Appointment
-                </MagneticButton>
-                <div className="mt-16 text-gray-400 text-sm">
-                    &copy; 2025 SparkleClean. Intelligent Home Care.
-                </div>
-                <a
-                    href="https://david-obonyano.vercel.app/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-block text-gray-500 hover:text-[#004D40] transition-colors text-sm"
-                >
-                    Built by <span className="font-semibold text-[#004D40]">David</span> — View Portfolio →
-                </a>
-            </footer>
+            <BookingSection
+                title="Book Service"
+                themeColor="bg-[#004D40]"
+            />
+
+            <Footer appName="SparkleClean" description="Intelligent Home Care." />
         </main>
     );
 }

@@ -6,9 +6,12 @@ import MagneticButton from "@/components/MagneticButton";
 import RevealImage from "@/components/RevealImage";
 import TextReveal from "@/components/TextReveal";
 import Carousel from "@/components/Carousel";
+import ContactModal from "@/components/ContactModal";
 import { ArrowRight, Shield, Star, Clock } from "lucide-react";
+import { useState } from "react";
 
 export default function RealEstatePage() {
+    const [isContactOpen, setIsContactOpen] = useState(false);
     return (
         <main className="min-h-screen bg-[#1A1A1A] text-[#E5E5E5] font-serif selection:bg-[#B8860B] selection:text-black">
             <Navbar
@@ -16,6 +19,7 @@ export default function RealEstatePage() {
                 ctaText="Private Viewing"
                 themeColor="text-[#E5E5E5]"
                 variant="luxury"
+                onCtaClick={() => setIsContactOpen(true)}
             />
 
             {/* HERO SECTION - Heavy, Dark, Metallic */}
@@ -44,7 +48,10 @@ export default function RealEstatePage() {
                         <MagneticButton className="px-10 py-5 bg-[#B8860B] text-black font-sans font-bold tracking-widest hover:bg-[#D4A017] transition-colors">
                             EXPLORE
                         </MagneticButton>
-                        <MagneticButton className="px-10 py-5 border border-[#B8860B] text-[#B8860B] font-sans font-bold tracking-widest hover:bg-[#B8860B]/10 transition-colors">
+                        <MagneticButton
+                            onClick={() => setIsContactOpen(true)}
+                            className="px-10 py-5 border border-[#B8860B] text-[#B8860B] font-sans font-bold tracking-widest hover:bg-[#B8860B]/10 transition-colors"
+                        >
                             CONTACT
                         </MagneticButton>
                     </div>
@@ -110,7 +117,10 @@ export default function RealEstatePage() {
             <footer className="bg-[#0A0A0A] py-24 text-center border-t border-white/5">
                 <h2 className="text-[12vw] font-bold text-[#1A1A1A] leading-none select-none pointer-events-none">FORGE</h2>
                 <div className="mt-[-8vw] relative z-10">
-                    <MagneticButton className="inline-block bg-[#B8860B] text-black px-12 py-6 font-bold font-sans tracking-widest text-xl hover:scale-105 transition-transform">
+                    <MagneticButton
+                        onClick={() => setIsContactOpen(true)}
+                        className="inline-block bg-[#B8860B] text-black px-12 py-6 font-bold font-sans tracking-widest text-xl hover:scale-105 transition-transform"
+                    >
                         START YOUR LEGACY
                     </MagneticButton>
                 </div>
@@ -123,6 +133,13 @@ export default function RealEstatePage() {
                     Built by <span className="font-semibold text-[#B8860B]">David</span> — View Portfolio →
                 </a>
             </footer>
+
+            <ContactModal
+                isOpen={isContactOpen}
+                onClose={() => setIsContactOpen(false)}
+                title="Private Inquiry"
+                accentColor="bg-[#B8860B]"
+            />
         </main>
     );
 }

@@ -7,11 +7,13 @@ import RevealImage from "@/components/RevealImage";
 import Footer from "@/components/Footer";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, Clock, Users, ArrowRight, UtensilsCrossed } from "lucide-react";
+import { Calendar, Clock, Users, ArrowRight, UtensilsCrossed, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 export default function RestaurantPage() {
-    const [hoveredDish, setHoveredDish] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [wishlist, setWishlist] = useState<string[]>([]);
 
     const menuItems = [
         {
@@ -40,6 +42,7 @@ export default function RestaurantPage() {
                 ctaText="Reserve Table"
                 themeColor="text-orange-500"
                 variant="luxury"
+                onCtaClick={() => document.getElementById('reservation')?.scrollIntoView({ behavior: 'smooth' })}
             />
 
             {/* HERO - Restaurant Interior Image */}
@@ -65,7 +68,10 @@ export default function RestaurantPage() {
                     <p className="text-xl md:text-2xl text-gray-300 font-light italic mb-12 max-w-2xl mx-auto">
                         "Cooking with fire is a relationship between control and chaos."
                     </p>
-                    <MagneticButton className="px-10 py-4 border border-orange-500/50 text-orange-500 hover:bg-orange-600 hover:text-white hover:border-transparent transition-all font-sans tracking-widest text-sm font-bold uppercase">
+                    <MagneticButton
+                        onClick={() => document.getElementById('reservation')?.scrollIntoView({ behavior: 'smooth' })}
+                        className="px-10 py-4 border border-orange-500/50 text-orange-500 hover:bg-orange-600 hover:text-white hover:border-transparent transition-all font-sans tracking-widest text-sm font-bold uppercase"
+                    >
                         Book Your Experience
                     </MagneticButton>
                 </div>
@@ -105,7 +111,29 @@ export default function RestaurantPage() {
                                         <div className="flex-grow flex flex-col justify-center">
                                             <div className="flex justify-between items-start">
                                                 <h5 className="text-2xl font-medium group-hover:text-orange-500 transition-colors">{item.name}</h5>
-                                                <span className="text-xl font-light text-orange-500">${item.price}</span>
+                                                <div className="flex items-center gap-4">
+                                                    <span className="text-xl font-light text-orange-500">${item.price}</span>
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            const isAdded = wishlist.includes(item.name);
+                                                            if (isAdded) {
+                                                                setWishlist(prev => prev.filter(i => i !== item.name));
+                                                                toast.info(`Removed ${item.name} from favorites`);
+                                                            } else {
+                                                                setWishlist(prev => [...prev, item.name]);
+                                                                toast.success(`Saved ${item.name} to favorites!`);
+                                                            }
+                                                        }}
+                                                        className="p-2 rounded-full hover:bg-orange-500/10 transition-colors"
+                                                    >
+                                                        <Heart
+                                                            className={cn("w-5 h-5 transition-colors",
+                                                                wishlist.includes(item.name) ? "fill-orange-500 text-orange-500" : "text-gray-500"
+                                                            )}
+                                                        />
+                                                    </button>
+                                                </div>
                                             </div>
                                             <p className="text-gray-500 font-sans text-sm mt-2">{item.desc}</p>
                                         </div>
@@ -125,13 +153,25 @@ export default function RestaurantPage() {
             </section>
 
             {/* RESERVATION - High End Form */}
-            <section className="py-32 bg-[#111] relative border-t border-white/5">
+            <section id="reservation" className="py-32 bg-[#111] relative border-t border-white/5">
                 <div className="container-width px-6 max-w-4xl mx-auto text-center">
                     <UtensilsCrossed className="w-12 h-12 text-orange-600 mx-auto mb-8 opacity-80" />
                     <h2 className="text-5xl md:text-6xl font-bold mb-12">Secure Your Table</h2>
 
                     <div className="bg-[#1A1A1A] p-10 md:p-16 rounded-3xl border border-white/5 shadow-2xl">
-                        <form className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        <form
+                            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10"
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                setIsSubmitting(true);
+                                setTimeout(() => {
+                                    setIsSubmitting(false);
+                                    toast.success("Reservation Request Sent!", {
+                                        description: "We'll confirm your table via SMS shortly.",
+                                    });
+                                }, 1500);
+                            }}
+                        >
                             <div className="relative group">
                                 <Users className="absolute top-1/2 left-4 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors" size={20} />
                                 <select className="w-full bg-[#0A0A0A] border border-white/10 text-white pl-12 pr-4 py-4 rounded-xl focus:outline-none focus:border-orange-500 appearance-none font-sans">
@@ -154,9 +194,16 @@ export default function RestaurantPage() {
                                     <option>8:30 PM</option>
                                 </select>
                             </div>
+                            <button type="submit" id="hidden-submit" className="hidden" />
                         </form>
-                        <MagneticButton className="w-full py-6 bg-gradient-to-r from-orange-700 to-red-700 text-white font-bold font-sans tracking-widest text-lg rounded-xl hover:scale-[1.01] transition-transform shadow-lg shadow-orange-900/20">
-                            CONFIRM RESERVATION
+                        <MagneticButton
+                            onClick={() => document.getElementById('hidden-submit')?.click()}
+                            className={cn(
+                                "w-full py-6 bg-gradient-to-r from-orange-700 to-red-700 text-white font-bold font-sans tracking-widest text-lg rounded-xl transition-all shadow-lg shadow-orange-900/20",
+                                isSubmitting ? "opacity-70 cursor-not-allowed" : "hover:scale-[1.01]"
+                            )}
+                        >
+                            {isSubmitting ? "PROCESSING..." : "CONFIRM RESERVATION"}
                         </MagneticButton>
                     </div>
                 </div>

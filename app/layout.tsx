@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Client Demos",
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
+        <Toaster position="top-right" richColors theme="dark" />
         <SmoothScroll>
           {children}
         </SmoothScroll>

@@ -1,6 +1,7 @@
 "use client";
-
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface BookingFormProps {
     title?: string;
@@ -8,6 +9,19 @@ interface BookingFormProps {
 }
 
 export default function BookingSection({ title = "Book an Appointment", themeColor = "bg-blue-600" }: BookingFormProps) {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setTimeout(() => {
+            setIsSubmitting(false);
+            toast.success("Booking Request Confirmed!", {
+                description: "Our team will reach out to you within 24 hours.",
+            });
+        }, 1500);
+    };
+
     return (
         <section className="py-24 bg-white" id="booking">
             <div className="container-width max-w-4xl">
@@ -24,15 +38,15 @@ export default function BookingSection({ title = "Book an Appointment", themeCol
                     </div>
 
                     <div className="p-10 md:w-3/5">
-                        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                        <form className="space-y-4" onSubmit={handleSubmit}>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <label className="text-sm font-semibold text-gray-700">First Name</label>
-                                    <input type="text" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all" placeholder="John" />
+                                    <input required type="text" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all" placeholder="John" />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-semibold text-gray-700">Last Name</label>
-                                    <input type="text" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all" placeholder="Doe" />
+                                    <input required type="text" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all" placeholder="Doe" />
                                 </div>
                             </div>
 
@@ -47,11 +61,18 @@ export default function BookingSection({ title = "Book an Appointment", themeCol
 
                             <div className="space-y-2">
                                 <label className="text-sm font-semibold text-gray-700">Preferred Date</label>
-                                <input type="date" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all" />
+                                <input required type="date" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all" />
                             </div>
 
-                            <button className={cn("w-full py-4 rounded-lg font-bold text-white shadow-lg mt-4 hover:opacity-90 transition-opacity", themeColor)}>
-                                Confirm Booking
+                            <button
+                                disabled={isSubmitting}
+                                className={cn(
+                                    "w-full py-4 rounded-lg font-bold text-white shadow-lg mt-4 transition-all",
+                                    themeColor,
+                                    isSubmitting ? "opacity-70 cursor-not-allowed scale-[0.98]" : "hover:opacity-90 hover:scale-[1.01]"
+                                )}
+                            >
+                                {isSubmitting ? "Confirming..." : "Confirm Booking"}
                             </button>
                         </form>
                     </div>

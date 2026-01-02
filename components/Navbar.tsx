@@ -12,6 +12,7 @@ interface NavbarProps {
     ctaLink?: string;
     themeColor?: string;
     variant?: "standard" | "luxury" | "tech" | "minimal";
+    onCtaClick?: () => void;
 }
 
 export default function Navbar({
@@ -19,7 +20,8 @@ export default function Navbar({
     ctaText,
     ctaLink = "#",
     themeColor = "bg-blue-600",
-    variant = "standard"
+    variant = "standard",
+    onCtaClick
 }: NavbarProps) {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -43,13 +45,25 @@ export default function Navbar({
                             {link.label}
                         </Link>
                     ))}
-                    <Link
-                        href={ctaLink}
-                        className={cn("text-center py-3 rounded-xl font-bold transition-all", buttonClass)}
-                        onClick={() => setIsOpen(false)}
-                    >
-                        {ctaText}
-                    </Link>
+                    {onCtaClick ? (
+                        <button
+                            onClick={() => {
+                                setIsOpen(false);
+                                onCtaClick();
+                            }}
+                            className={cn("text-center py-3 rounded-xl font-bold transition-all", buttonClass)}
+                        >
+                            {ctaText}
+                        </button>
+                    ) : (
+                        <Link
+                            href={ctaLink}
+                            className={cn("text-center py-3 rounded-xl font-bold transition-all", buttonClass)}
+                            onClick={() => setIsOpen(false)}
+                        >
+                            {ctaText}
+                        </Link>
+                    )}
                 </motion.div>
             )}
         </AnimatePresence>
@@ -68,12 +82,21 @@ export default function Navbar({
                     <nav className="hidden md:flex gap-8 items-center font-sans text-xs tracking-[0.2em] font-bold">
                         <Link href="#" className="hover:text-[#B8860B] transition-colors uppercase drop-shadow-md">Collection</Link>
                         <Link href="#" className="hover:text-[#B8860B] transition-colors uppercase drop-shadow-md">Studio</Link>
-                        <Link
-                            href={ctaLink}
-                            className="bg-[#B8860B] text-black px-6 py-2 hover:bg-[#D4A017] transition-all uppercase font-bold tracking-widest"
-                        >
-                            {ctaText}
-                        </Link>
+                        {onCtaClick ? (
+                            <button
+                                onClick={onCtaClick}
+                                className="bg-[#B8860B] text-black px-6 py-2 hover:bg-[#D4A017] transition-all uppercase font-bold tracking-widest"
+                            >
+                                {ctaText}
+                            </button>
+                        ) : (
+                            <Link
+                                href={ctaLink}
+                                className="bg-[#B8860B] text-black px-6 py-2 hover:bg-[#D4A017] transition-all uppercase font-bold tracking-widest"
+                            >
+                                {ctaText}
+                            </Link>
+                        )}
                     </nav>
 
                     {/* Mobile Toggle */}
@@ -110,12 +133,21 @@ export default function Navbar({
                     <nav className="hidden md:flex gap-8 items-center text-slate-800 text-sm font-bold tracking-wide">
                         <Link href="#" className="hover:text-[#1B5E20] transition-colors">Philosophy</Link>
                         <Link href="#" className="hover:text-[#1B5E20] transition-colors">Treatments</Link>
-                        <Link
-                            href={ctaLink}
-                            className={cn("px-6 py-2 rounded-full font-bold transition-all hover:shadow-lg text-white border border-transparent hover:-translate-y-0.5", themeColor)}
-                        >
-                            {ctaText}
-                        </Link>
+                        {onCtaClick ? (
+                            <button
+                                onClick={onCtaClick}
+                                className={cn("px-6 py-2 rounded-full font-bold transition-all hover:shadow-lg text-white border border-transparent hover:-translate-y-0.5", themeColor)}
+                            >
+                                {ctaText}
+                            </button>
+                        ) : (
+                            <Link
+                                href={ctaLink}
+                                className={cn("px-6 py-2 rounded-full font-bold transition-all hover:shadow-lg text-white border border-transparent hover:-translate-y-0.5", themeColor)}
+                            >
+                                {ctaText}
+                            </Link>
+                        )}
                     </nav>
 
                     {/* Mobile Toggle */}
@@ -151,12 +183,21 @@ export default function Navbar({
                 <nav className="hidden md:flex gap-8 items-center text-slate-600 font-medium">
                     <Link href="#" className="hover:text-blue-600 transition-colors">Solutions</Link>
                     <Link href="#" className="hover:text-blue-600 transition-colors">Process</Link>
-                    <Link
-                        href={ctaLink}
-                        className={cn("px-6 py-2.5 rounded-xl font-bold transition-all hover:scale-105 shadow-lg text-white", themeColor)}
-                    >
-                        {ctaText}
-                    </Link>
+                    {onCtaClick ? (
+                        <button
+                            onClick={onCtaClick}
+                            className={cn("px-6 py-2.5 rounded-xl font-bold transition-all hover:scale-105 shadow-lg text-white", themeColor)}
+                        >
+                            {ctaText}
+                        </button>
+                    ) : (
+                        <Link
+                            href={ctaLink}
+                            className={cn("px-6 py-2.5 rounded-xl font-bold transition-all hover:scale-105 shadow-lg text-white", themeColor)}
+                        >
+                            {ctaText}
+                        </Link>
+                    )}
                 </nav>
 
                 {/* Mobile Toggle */}

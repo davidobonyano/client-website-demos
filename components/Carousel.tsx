@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import RevealImage from "@/components/RevealImage";
+import { toast } from "sonner";
 
 interface CarouselItem {
     title: string;
@@ -95,8 +96,19 @@ export default function Carousel({ items }: CarouselProps) {
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.4, duration: 0.5 }}
+                            className="flex items-center gap-6"
                         >
                             <p className="text-3xl md:text-4xl text-white font-light font-sans">{items[currentIndex].price}</p>
+                            <button
+                                onClick={() => {
+                                    toast.success("Property Saved", {
+                                        description: `${items[currentIndex].title} added to your collection.`
+                                    });
+                                }}
+                                className="p-4 rounded-full border border-white/20 hover:bg-[#B8860B] hover:border-[#B8860B] transition-all group/heart"
+                            >
+                                <Heart className="w-6 h-6 text-white group-hover/heart:fill-black group-hover/heart:text-black transition-colors" />
+                            </button>
                         </motion.div>
                     </div>
                 </div>
